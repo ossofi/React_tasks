@@ -1,4 +1,4 @@
-import "../styles/main.scss";
+import "../Tooltip/Tooltip.scss";
 
 const Tooltip = ({ text, children, component: Component = "span" }) => {
   return (

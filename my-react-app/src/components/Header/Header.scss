@@ -1,0 +1,28 @@
+.container-header {
+    display: grid;
+  }
+  
+  .navbar {
+    margin: 0 auto;
+    width: 85%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+  
+  .navbar-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar-nav li {
+    list-style: none;
+    color: #28224B;
+  }
+  
+  .navbar-nav li:hover {
+    color: #35B8BE;
+  }
+  

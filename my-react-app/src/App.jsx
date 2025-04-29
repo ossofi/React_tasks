@@ -1,33 +1,24 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import MenuPage from './pages/Menu';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cartCount: 0,
-    };
-  }
+const App = () => {
+  const [cartCount, setCartCount] = useState(0);
 
-  handleAddToCart = () => {
-    this.setState(prevState => ({
-      cartCount: prevState.cartCount + 1,
-    }));
+  const handleAddToCart = () => {
+    setCartCount(prev => prev + 1);
   };
 
-  render() {
-    return (
-      <div className="app">
-        <div className="app-container">
-          <Header cartCount={this.state.cartCount} />
-          <MenuPage onAddToCart={this.handleAddToCart} />
-          <Footer />
-        </div>
+  return (
+    <div className="app">
+      <div className="app-container">
+        <Header cartCount={cartCount} />
+        <MenuPage onAddToCart={handleAddToCart} />
+        <Footer />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default App;

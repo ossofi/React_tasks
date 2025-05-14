@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import MenuPage from './pages/Menu';
+import Home from './pages/Home';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 
 const App = () => {
-  const [cartCount, setCartCount] = useState(0);
+  const [cartCount, _setCartCount] = useState(0);
 
-  const handleAddToCart = () => {
-    setCartCount(prev => prev + 1);
-  };
+  // const handleAddToCart = (quantity) => {
+  //   setCartCount(prev => prev + quantity);
+  // };
 
   return (
     <div className="app">
       <div className="app-container">
         <Header cartCount={cartCount} />
-        <MenuPage onAddToCart={handleAddToCart} />
+        <Home />
+        {/* <MenuPage onAddToCart={handleAddToCart} cartCount={cartCount} /> */}
         <Footer />
       </div>
     </div>

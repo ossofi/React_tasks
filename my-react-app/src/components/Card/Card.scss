@@ -22,8 +22,7 @@
   }
   
   .item-img {
-    width: 7em;
-    height: 7em;
+    height: 10em;
     text-align: center;
   }
   
@@ -61,18 +60,33 @@
   
   .item-footer {
     display: flex;
-    justify-content: flex-start;
-    gap: 0.8em;
-  }
+    justify-content: space-between; /* Ensure elements are spaced out more evenly */
+    align-items: center; /* Vertically align items to the center */
+    gap: 0em; /* Adjust gap between elements */
+}
   
   .item-amount {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #FAFAFA;
-    padding: 0.55em 1.45em;
+    padding: 0.55em 0.6em 0.55em 0em;
     border-radius: 0.3em;
     text-align: center;
-    border: 0.1em solid #DDDDDD;
+  }
+  .item-amount input {
+    width: 50px;
+    height: 40px;
+    text-align: center;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    appearance: textfield;
+  }
+  
+  .item-amount input::-webkit-outer-spin-button,
+  .item-amount input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
   

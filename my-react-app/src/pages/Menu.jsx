@@ -5,18 +5,28 @@ import Button from '../components/Button/Button.jsx';
 import '../styles/main.scss';
 
 const MenuPage = ({ onAddToCart }) => {
+  const ITEMS_PER_PAGE = 6;
   const [products, setProducts] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     fetch('https://65de35f3dccfcd562f5691bb.mockapi.io/api/v1/meals')
       .then(res => res.json())
       .then(data => {
         setProducts(data);
+        const uniqueCategories = [...new Set(data.map(item => item.category))];
+        setCategories(uniqueCategories);
       })
       .catch(err => console.error('Error fetching meals:', err));
   }, []);
+
+  const filteredProducts = selectedCategory === 'All'
+    ? products
+    : products.filter(product => product.category === selectedCategory);
+
+  const visibleItems = filteredProducts.slice(0, visibleCount);
 
   const handleSeeMore = () => {
     setVisibleCount(prevCount => prevCount + 6);
@@ -24,14 +34,8 @@ const MenuPage = ({ onAddToCart }) => {
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
-    setVisibleCount(6);
+    setVisibleCount(ITEMS_PER_PAGE);
   };
-
-  const filteredProducts = selectedCategory === 'All'
-    ? products
-    : products.filter(product => product.category === selectedCategory);
-
-  const visibleItems = filteredProducts.slice(0, visibleCount);
 
   return (
     <div className="menu-container">
@@ -45,9 +49,15 @@ const MenuPage = ({ onAddToCart }) => {
       </p>
 
       <div className="menu-buttons">
-        <Button className="button--menu" onClick={() => handleCategoryClick('Dessert')}>Dessert</Button>
-        <Button className="button--menu" onClick={() => handleCategoryClick('Dinner')}>Dinner</Button>
-        <Button className="button--menu" onClick={() => handleCategoryClick('Breakfast')}>Breakfast</Button>
+        {categories.map(category => (
+          <Button
+            key={category}
+            className={`button--menu ${selectedCategory === category ? 'active' : ''}`}
+            onClick={() => handleCategoryClick(category)}
+          >
+            {category}
+          </Button>
+        ))}
       </div>
 
       <div className="item-cards">

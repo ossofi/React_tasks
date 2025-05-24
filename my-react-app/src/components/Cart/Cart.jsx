@@ -1,12 +1,12 @@
 import React from 'react';
-import basket from '../../assets/images/Basket.png';
+import basket from '../../assets/images/Basket.png'; 
 import './Cart.scss';
 
 const Cart = ({ cartCount }) => {
   return (
     <div className="cart-container">
       <img src={basket} alt="Cart" className="cart-icon" />
-      <span className="cart-counter">{cartCount}</span>
+      <span className="cart-counter">{cartCount}</span> 
     </div>
   );
 };

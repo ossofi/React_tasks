@@ -5,7 +5,7 @@ import inst from '../../assets/images/Inst.png';
 import tw from '../../assets/images/Twitt.png';
 import ytb from '../../assets/images/Youtube.png';
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
     <div className='footer'>
       <div className='container-footer'>

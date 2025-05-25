@@ -1,16 +1,29 @@
 import React, { useState } from 'react';
-import Button from '../Button/Button.jsx';
 import './Card.scss';
+import Button from '../Button/Button';
 
-const MenuCard = ({ product, onAddToCart }) => {
-  const [quantity, setQuantity] = useState(1);
+interface Product {
+  id: string;
+  meal: string;
+  price: number;
+  img: string;
+  instructions?: string;
+}
 
-  const handleQuantityChange = (e) => {
+interface MenuCardProps {
+  product: Product;
+  onAddToCart: (quantity: number) => void;
+}
+
+const MenuCard: React.FC<MenuCardProps> = ({ product, onAddToCart }) => {
+  const [quantity, setQuantity] = useState<number>(1);
+
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuantity(Math.max(1, parseInt(e.target.value) || 1));
   };
 
   const handleAddToCart = () => {
-    onAddToCart(quantity); 
+    onAddToCart(quantity);
   };
 
   return (
@@ -30,7 +43,7 @@ const MenuCard = ({ product, onAddToCart }) => {
           <div className="item-amount">
             <input
               type="number"
-              min="1"
+              min={1}
               value={quantity}
               onChange={handleQuantityChange}
             />

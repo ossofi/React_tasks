@@ -1,9 +1,18 @@
 import React from 'react';
 import logo from '../../assets/images/Logo.png';
-import Cart from '../Cart/Cart.jsx';
+import Cart from '../Cart/Cart';
 import './Header.scss';
 
-const Header = ({ cartCount, user, onNavigate }) => {
+interface HeaderProps {
+  cartCount: number;
+  user: {
+    name: string;
+    email: string;
+  } | null;
+  onNavigate: (page: 'home' | 'menu' | 'login') => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ cartCount, user, onNavigate }) => {
   return (
     <div className="container-header">
       <nav className="navbar">

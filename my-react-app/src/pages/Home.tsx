@@ -95,22 +95,38 @@ const FoodImage = styled.img`
   width: 110%;
   border-radius: 12px;
 `;
+export interface CustomUser {
+  name: string;
+  email: string;
+}
+interface HomeProps {
+  user: CustomUser | null;
+  onNavigate: (page: 'home' | 'menu' | 'login') => void;
+}
 
-const Home: React.FC = () => {
+const Home: React.FC<HomeProps> = ({ user, onNavigate }) => {
+  const handleOrderClick = () => {
+    if (user) {
+      onNavigate('menu');
+    } else {
+      onNavigate('login');
+    }
+  };
+
   return (
     <Wrapper>
-      <Grid>
-        <Left>
-          <Heading>
-            Beautiful food & takeaway, <Highlight>delivered</Highlight> to your door.
-          </Heading>
-          <Description>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-          </Description>
-          <StyledButton>
-            Place an Order
-          </StyledButton>
+    <Grid>
+      <Left>
+        <Heading>
+          Beautiful food & takeaway, <Highlight>delivered</Highlight> to your door.
+        </Heading>
+        <Description>
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+        </Description>
+        <StyledButton onClick={handleOrderClick}>
+          Place an Order
+        </StyledButton>
           <ReviewScore>
             <TrustLogo>
               <img src={trustpilot} alt="Trustpilot Logo" className="tplogo" />

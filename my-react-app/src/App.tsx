@@ -6,12 +6,20 @@ import Footer from './components/Footer/Footer';
 import LoginPage from './pages/Login';
 import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { auth } from './firebase.js';
-import { CustomUser } from './pages/Login';
+import { CustomUser } from './pages/Home';
+import { useDispatch } from 'react-redux';
+import { resetCart } from './store/cartSlice';
+import { useSelector } from 'react-redux';
+import { RootState } from './store/store';
 
 const App: React.FC = () => {
-  const [cartCount, setCartCount] = useState<number>(0);
   const [user, setUser] = useState<CustomUser | null>(null);
   const [page, setPage] = useState<'home' | 'menu' | 'login'>('home');
+
+  const cartCount = useSelector((state: RootState) =>
+    state.cart.items.reduce((total, item) => total + item.quantity, 0)
+  );
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (currentUser: FirebaseUser | null) => {
@@ -22,38 +30,27 @@ const App: React.FC = () => {
         });
       } else {
         setUser(null);
+        dispatch(resetCart());
       }
     });
     return () => unsub();
   }, []);
-
-
-  const handleAddToCart = (quantity: number) => {
-    if (!user) {
-      setPage('login');
-      return;
-    }
-    setCartCount(c => c + quantity);
-  };
-
+  
   return (
     <div className="app">
       <div className="app-container">
         <Header
           cartCount={user ? cartCount : 0}
           user={user}
-          onNavigate={setPage}
-        />
+          onNavigate={setPage}/>
 
         {page === 'login' && (
-          <LoginPage user={user} onBackHome={() => setPage('home')} />
+          <LoginPage onBackHome={() => setPage('home')} />
         )}
 
-        {page === 'home' && <Home />}
+        {page === 'home' && <Home user={user} onNavigate={setPage} />}
 
-        {page === 'menu' && (
-          <MenuPage onAddToCart={handleAddToCart} />
-        )}
+        {page === 'menu' && <MenuPage user={user} onNavigate={setPage} />}
 
         <Footer />
       </div>
@@ -62,4 +59,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-export type { CustomUser };

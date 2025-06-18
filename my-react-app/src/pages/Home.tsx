@@ -96,7 +96,7 @@ const FoodImage = styled.img`
   border-radius: 12px;
 `;
 
-const Home = () => {
+const Home: React.FC = () => {
   return (
     <Wrapper>
       <Grid>

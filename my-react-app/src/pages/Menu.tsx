@@ -1,38 +1,52 @@
 import React, { useEffect, useState } from 'react';
-import Tooltip from '../components/Tooltip/Tooltip.jsx';
-import MenuCard from '../components/Card/Card.jsx';
-import Button from '../components/Button/Button.jsx'; 
+import Tooltip from '../components/Tooltip/Tooltip';
+import MenuCard from '../components/Card/Card';
+import Button from '../components/Button/Button';
 import '../styles/main.scss';
 
-const MenuPage = ({ onAddToCart }) => {
+interface Product {
+  id: string;
+  meal: string;
+  price: number;
+  img: string;
+  category: string;
+  instructions?: string;
+}
+
+interface MenuPageProps {
+  onAddToCart: (quantity: number) => void;
+}
+
+const MenuPage: React.FC<MenuPageProps> = ({ onAddToCart }) => {
   const ITEMS_PER_PAGE = 6;
-  const [products, setProducts] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [categories, setCategories] = useState([]);
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [visibleCount, setVisibleCount] = useState<number>(ITEMS_PER_PAGE);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
     fetch('https://65de35f3dccfcd562f5691bb.mockapi.io/api/v1/meals')
       .then(res => res.json())
-      .then(data => {
+      .then((data: Product[]) => {
         setProducts(data);
-        const uniqueCategories = [...new Set(data.map(item => item.category))];
+        const uniqueCategories = Array.from(new Set(data.map(item => item.category)));
         setCategories(uniqueCategories);
       })
       .catch(err => console.error('Error fetching meals:', err));
   }, []);
 
-  const filteredProducts = selectedCategory === 'All'
-    ? products
-    : products.filter(product => product.category === selectedCategory);
-
+  const filteredProducts = selectedCategory 
+    ? products.filter(product => product.category === selectedCategory)
+    : products;
+    
   const visibleItems = filteredProducts.slice(0, visibleCount);
 
   const handleSeeMore = () => {
-    setVisibleCount(prevCount => prevCount + 6);
+    setVisibleCount(prev => prev + 6);
   };
 
-  const handleCategoryClick = (category) => {
+  const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
     setVisibleCount(ITEMS_PER_PAGE);
   };

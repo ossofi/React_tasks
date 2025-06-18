@@ -4,27 +4,36 @@ import Home from './pages/Home';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import LoginPage from './pages/Login';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase';
+import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
+import { auth } from './firebase.js';
+import { CustomUser } from './pages/Login';
 
-const App = () => {
-  const [cartCount, setCartCount] = useState(0);
-  const [user, setUser] = useState(null);
-  const [page, setPage] = useState('home');
+const App: React.FC = () => {
+  const [cartCount, setCartCount] = useState<number>(0);
+  const [user, setUser] = useState<CustomUser | null>(null);
+  const [page, setPage] = useState<'home' | 'menu' | 'login'>('home');
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsub = onAuthStateChanged(auth, (currentUser: FirebaseUser | null) => {
+      if (currentUser) {
+        setUser({
+          name: currentUser.displayName || 'Anonymous',
+          email: currentUser.email || 'No Email',
+        });
+      } else {
+        setUser(null);
+      }
     });
     return () => unsub();
   }, []);
 
-  const handleAddToCart = (q) => {
+
+  const handleAddToCart = (quantity: number) => {
     if (!user) {
       setPage('login');
       return;
     }
-    setCartCount((c) => c + q);
+    setCartCount(c => c + quantity);
   };
 
   return (
@@ -53,3 +62,4 @@ const App = () => {
 };
 
 export default App;
+export type { CustomUser };

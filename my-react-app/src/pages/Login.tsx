@@ -1,43 +1,40 @@
-import React, { useState } from 'react';
-import { User, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import React, { useState, useEffect } from 'react';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
-import useFetch from '../hooks/useFetch';
 import Button from '../components/Button/Button';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { setUser } from '../store/userSlice';
 
-export interface CustomUser {
-  name: string;
-  email: string;
-}
+const LoginPage: React.FC<{ onBackHome: () => void }> = ({ onBackHome }) => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(state => state.user.user);
 
-interface LoginPageProps {
-  user: CustomUser | null;
-  onBackHome: () => void;
-}
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-const LoginPage: React.FC<LoginPageProps> = ({ user, onBackHome }) => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string>('');
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        dispatch(setUser({ name: firebaseUser.displayName || '', email: firebaseUser.email || '' }));
+      } else {
+        dispatch(setUser(null));
+      }
+    });
 
-  const withLogger = useFetch();
-  const loginWithLogger = withLogger((email: string, password: string) => 
-    signInWithEmailAndPassword(auth, email, password)
-  );
-  const logoutWithLogger = withLogger(signOut);
+    return () => unsubscribe();
+  }, [dispatch]);
 
-  const validate = (): boolean => {
+  const validate = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     if (!email.trim() || !password.trim()) {
       setError('All fields are required');
       return false;
     }
-
     if (!emailRegex.test(email)) {
       setError('Email format is invalid');
       return false;
     }
-
     setError('');
     return true;
   };
@@ -47,7 +44,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ user, onBackHome }) => {
     if (!validate()) return;
 
     try {
-      await loginWithLogger(email, password);
+      await signInWithEmailAndPassword(auth, email, password);
       setEmail('');
       setPassword('');
     } catch {
@@ -56,7 +53,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ user, onBackHome }) => {
   };
 
   const handleLogout = async () => {
-    await logoutWithLogger(auth);
+    await signOut(auth);
     setEmail('');
     setPassword('');
   };
@@ -69,7 +66,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ user, onBackHome }) => {
 
   return (
     <div className="login-container">
-      <h1>{user ? 'Logged In' : 'Log In'}</h1>
+      <h1>{user ? `Logged in as ${user.email}` : 'Log In'}</h1>
 
       {user ? (
         <>
@@ -77,35 +74,33 @@ const LoginPage: React.FC<LoginPageProps> = ({ user, onBackHome }) => {
           <Button onClick={onBackHome} className="button--menu">Go Home</Button>
         </>
       ) : (
-        <div className="login-form-container">
-          <form onSubmit={handleLogin}>
-            <div className="login-form">
-              <p>
-                <span>User</span>
-                <input
-                  type="text"
-                  placeholder="Email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                />
-              </p>
-              <p>
-                <span>Password</span>
-                <input
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                />
-              </p>
-            </div>
+        <form onSubmit={handleLogin} className="login-form-container">
+          <div className="login-form">
+            <p>
+              <span>User</span>
+              <input
+                type="text"
+                placeholder="Email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
+            </p>
+            <p>
+              <span>Password</span>
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+            </p>
+          </div>
 
-            <div className="button-container">
-              <Button type="submit" className="button--submit">Submit</Button>
-              <Button type="button" onClick={handleCancel} className="button--cancel">Cancel</Button>
-            </div>
-          </form>
-        </div>
+          <div className="button-container">
+            <Button type="submit" className="button--submit">Submit</Button>
+            <Button type="button" onClick={handleCancel} className="button--cancel">Cancel</Button>
+          </div>
+        </form>
       )}
 
       {error && <p style={{ color: 'red' }}>{error}</p>}

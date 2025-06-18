@@ -12,7 +12,7 @@ interface HeaderProps {
   onNavigate: (page: 'home' | 'menu' | 'login') => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ cartCount, user, onNavigate }) => {
+const Header: React.FC<HeaderProps> = ({ user, onNavigate }) => {
   return (
     <div className="container-header">
       <nav className="navbar">
@@ -27,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount, user, onNavigate }) => {
             {user ? 'Logout' : 'Login'}
           </li>
           <li>
-            <Cart cartCount={cartCount} />
+            <Cart />
           </li>
         </ul>
       </nav>

@@ -1,16 +1,18 @@
 import React from 'react';
-import basket from '../../assets/images/Basket.png'; 
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import basket from '../../assets/images/Basket.png';
 import './Cart.scss';
 
-interface CartProps {
-  cartCount: number;
-}
-
-const Cart: React.FC<CartProps> = ({ cartCount }) => {
+const Cart: React.FC = () => {
+  const cartCount = useSelector((state: RootState) =>
+    state.cart.items.reduce((total, item) => total + item.quantity, 0)
+  );
+  
   return (
     <div className="cart-container">
       <img src={basket} alt="Cart" className="cart-icon" />
-      <span className="cart-counter">{cartCount}</span> 
+      <span className="cart-counter">{cartCount}</span>
     </div>
   );
 };

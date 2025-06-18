@@ -1,29 +1,36 @@
 import React, { useState } from 'react';
 import './Card.scss';
 import Button from '../Button/Button';
-
-interface Product {
-  id: string;
-  meal: string;
-  price: number;
-  img: string;
-  instructions?: string;
-}
+import { useDispatch } from 'react-redux';
+import { addToCart, CartItem, Product } from '../../store/cartSlice';
+import { AppDispatch } from '../../store/store';
+import { CustomUser } from '../../pages/Home';
 
 interface MenuCardProps {
   product: Product;
-  onAddToCart: (quantity: number) => void;
+  user: CustomUser | null;
+  onNavigate: (page: 'home' | 'menu' | 'login') => void;
 }
 
-const MenuCard: React.FC<MenuCardProps> = ({ product, onAddToCart }) => {
+const MenuCard: React.FC<MenuCardProps> = ({ product, user, onNavigate }) => {
   const [quantity, setQuantity] = useState<number>(1);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuantity(Math.max(1, parseInt(e.target.value) || 1));
   };
 
   const handleAddToCart = () => {
-    onAddToCart(quantity);
+    if (!user) {
+      onNavigate('login');
+      return;
+    }
+  
+    const cartItem: CartItem = {
+      ...product,
+      quantity,
+    };
+    dispatch(addToCart(cartItem));
   };
 
   return (

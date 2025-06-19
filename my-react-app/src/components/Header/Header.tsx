@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/Logo.png';
 import Cart from '../Cart/Cart';
 import './Header.scss';
@@ -9,25 +10,30 @@ interface HeaderProps {
     name: string;
     email: string;
   } | null;
-  onNavigate: (page: 'home' | 'menu' | 'login') => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ user, onNavigate }) => {
+const Header: React.FC<HeaderProps> = ({ user, cartCount }) => {
+  const navigate = useNavigate();
+
+  const handleNav = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <div className="container-header">
       <nav className="navbar">
-        <a className="navbar-logo" href="#" onClick={() => onNavigate('home')}>
+        <div className="navbar-logo" onClick={() => handleNav('/')}>
           <img src={logo} alt="Logo" />
-        </a>
+        </div>
         <ul className="navbar-nav">
-          <li onClick={() => onNavigate('home')}>Home</li>
-          <li onClick={() => onNavigate('menu')}>Menu</li>
+          <li onClick={() => handleNav('/')}>Home</li>
+          <li onClick={() => handleNav('/menu')}>Menu</li>
           <li>Company</li>
-          <li onClick={() => onNavigate('login')}>
+          <li onClick={() => handleNav('/login')}>
             {user ? 'Logout' : 'Login'}
           </li>
           <li>
-            <Cart />
+            <Cart user={user} />
           </li>
         </ul>
       </nav>

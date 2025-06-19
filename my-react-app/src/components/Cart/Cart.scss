@@ -2,7 +2,9 @@
     position: relative;
     display: inline-block;
   }
-  
+  .cart-container:hover {
+    cursor: pointer;
+  }
   .cart-icon {
     width: 3.18em;
     

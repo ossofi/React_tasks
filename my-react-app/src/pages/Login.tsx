@@ -4,17 +4,19 @@ import { auth } from '../firebase';
 import Button from '../components/Button/Button';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setUser } from '../store/userSlice';
+import { useNavigate } from 'react-router-dom';
 
-const LoginPage: React.FC<{ onBackHome: () => void }> = ({ onBackHome }) => {
+const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(state => state.user.user);
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, firebaseUser => {
       if (firebaseUser) {
         dispatch(setUser({ name: firebaseUser.displayName || '', email: firebaseUser.email || '' }));
       } else {
@@ -47,6 +49,7 @@ const LoginPage: React.FC<{ onBackHome: () => void }> = ({ onBackHome }) => {
       await signInWithEmailAndPassword(auth, email, password);
       setEmail('');
       setPassword('');
+      navigate('/');
     } catch {
       setError('Login failed. Check credentials.');
     }
@@ -71,7 +74,7 @@ const LoginPage: React.FC<{ onBackHome: () => void }> = ({ onBackHome }) => {
       {user ? (
         <>
           <Button onClick={handleLogout} className="button--more">Logout</Button>
-          <Button onClick={onBackHome} className="button--menu">Go Home</Button>
+          <Button onClick={() => navigate('/')} className="button--menu">Go Home</Button>
         </>
       ) : (
         <form onSubmit={handleLogin} className="login-form-container">
@@ -95,7 +98,6 @@ const LoginPage: React.FC<{ onBackHome: () => void }> = ({ onBackHome }) => {
               />
             </p>
           </div>
-
           <div className="button-container">
             <Button type="submit" className="button--submit">Submit</Button>
             <Button type="button" onClick={handleCancel} className="button--cancel">Cancel</Button>

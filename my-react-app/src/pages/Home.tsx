@@ -1,41 +1,45 @@
 import React from 'react';
 import styled from 'styled-components';
 import homeimg from '../assets/images/homeimg.svg';
-import trustpilot from '../assets/images/trustpilot-logo.svg';
+import trustpilotLight from '../assets/images/trustpilot-logo.svg';
+import trustpilotDark from '../assets/images/trustpilot-logo-dark.svg';
 import { useNavigate } from 'react-router-dom';
+import '../styles/main.scss'
+import { ThemeContext } from '../context/Theme';
+import type { HomeProps } from '../types/types';
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   padding: 10em 0;
   display: flex;
   justify-content: center;
 `;
 
-const Grid = styled.div`
+export const Grid = styled.div`
   width: 85%;
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
-const Left = styled.div`
+export const Left = styled.div`
   flex: 1;
 `;
 
-const Heading = styled.h1`
+export const Heading = styled.h1`
   font-size: 3.4em;
-  color: #2e2e2e;
+  color: ${({ theme }) => theme.text};
   line-height: 1.2em;
   font-weight: normal;
   margin: 0;
   padding: 0;
 `;
 
-const Highlight = styled.span`
-  color: #35B8BE;
+export const Highlight = styled.span`
+  color: ${({ theme }) => theme.accent};
 `;
 
-const Description = styled.p`
-  color: #546285;
+export const Description = styled.p`
+  color: ${({ theme }) => theme.muted};
   line-height: 1.8em;
   font-weight: 100;
   letter-spacing: 0.05em;
@@ -43,11 +47,11 @@ const Description = styled.p`
   width: 90%;
 `;
 
-const StyledButton = styled.button`
+export const StyledButton = styled.button`
   padding: 1em 2.5em;
-  background-color: #35B8BE;
+  background-color: ${({ theme }) => theme.accent};
   color: white;
-  border: 0.1em solid #35B8BE;
+  border: 0.1em solid ${({ theme }) => theme.accent};
   margin-top: 1em;
   font-size: 1em;
   font-weight: 100;
@@ -57,11 +61,11 @@ const StyledButton = styled.button`
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: #2ca2a7;
+    background-color: ${({ theme }) => theme.accentHover || '#2ca2a7'};
   }
 `;
 
-const ReviewScore = styled.div`
+export const ReviewScore = styled.div`
   margin-top: 1.5em;
   display: flex;
   flex-direction: column;
@@ -69,41 +73,33 @@ const ReviewScore = styled.div`
   gap: 0.3em;
 `;
 
-const TrustLogo = styled.span`
+export const TrustLogo = styled.span`
   .tplogo {
     width: 120px;
     height: auto;
   }
 `;
 
-const Rating = styled.span`
-  color: #546285;
+export const Rating = styled.span`
+  color: ${({ theme }) => theme.muted};
   font-size: 0.95em;
   line-height: 1.4em;
 `;
 
-const Score = styled.span`
+export const Score = styled.span`
   font-weight: 100;
-  color: #35B8BE;
+  color: ${({ theme }) => theme.accent};
 `;
 
-const Right = styled.div`
+export const Right = styled.div`
   flex: 1;
   position: relative;
 `;
 
-const FoodImage = styled.img`
+export const FoodImage = styled.img`
   width: 110%;
   border-radius: 12px;
 `;
-export interface CustomUser {
-  name: string;
-  email: string;
-}
-
-interface HomeProps {
-  user: CustomUser | null;
-}
 
 const Home: React.FC<HomeProps> = ({ user }) => {
   const navigate = useNavigate();
@@ -111,6 +107,8 @@ const Home: React.FC<HomeProps> = ({ user }) => {
   const handleOrderClick = () => {
     navigate(user ? '/menu' : '/login');
   };
+
+  const { theme } = React.useContext(ThemeContext);
 
   return (
     <Wrapper>
@@ -125,7 +123,9 @@ const Home: React.FC<HomeProps> = ({ user }) => {
           <StyledButton onClick={handleOrderClick}>Place an Order</StyledButton>
           <ReviewScore>
             <TrustLogo>
-              <img src={trustpilot} alt="Trustpilot Logo" className="tplogo" />
+            <img src={theme === 'dark' ? trustpilotDark : trustpilotLight} 
+            alt="Trustpilot Logo" className="tplogo"/>
+
             </TrustLogo>
             <Rating>
               <Score>4.8 out of 5</Score> based on 2000+ reviews

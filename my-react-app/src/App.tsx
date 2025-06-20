@@ -4,7 +4,7 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { auth } from './firebase';
-import { CustomUser } from './pages/Home';
+import type { CustomUser } from './types/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetCart } from './store/cartSlice';
 import { RootState } from './store/store';

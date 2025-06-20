@@ -4,10 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import basket from '../../assets/images/Basket.png';
 import './Cart.scss';
-
-interface CartProps {
-  user: { name: string; email: string } | null;
-}
+import type { CartProps } from '../../types/types';
 
 const Cart: React.FC<CartProps> = ({ user }) => {
   const navigate = useNavigate();

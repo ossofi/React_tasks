@@ -1,28 +1,28 @@
 .cart-container {
-    position: relative;
-    display: inline-block;
-  }
-  .cart-container:hover {
+  position: relative;
+  display: inline-block;
+
+  &:hover {
     cursor: pointer;
   }
-  .cart-icon {
-    width: 3.18em;
-    
-  }
-  
-  .cart-counter {
-    position: absolute;
-    top: -0.1em;
-    right: -0.1em;
-    width: 1.8em;
-    height: 1.8em;
-    background-color: rgb(255, 255, 255);
-    color: #35B8BE;
-    font-size: 0.75em;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-  }
-  
+}
+
+.cart-icon {
+  width: 3.18em;
+}
+
+.cart-counter {
+  position: absolute;
+  top: -0.1em;
+  right: -0.1em;
+  width: 1.8em;
+  height: 1.8em;
+  background-color: var(--bg-color);
+  color: var(--accent-color);
+  font-size: 0.75em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}

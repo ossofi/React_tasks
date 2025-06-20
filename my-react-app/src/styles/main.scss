@@ -1,143 +1,198 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+:root {
+  --bg-color: #ffffff;
+  --text-color: #28224B;
+  --accent-color: #35B8BE;
+  --surface-color: #ffffff;
+  --border-color: #DDDDDD;
+  --input-color: #08090A;
+  --muted-color: #546285;
+  --input-bg: #FAFAFA;
+  --switch-color: #cbcbd4;
+}
+
+[data-theme='dark'] {
+  --bg-color: #303136;
+  --text-color: #d7d7d7;
+  --accent-color: #35B8BE;
+  --surface-color: #464646;
+  --border-color: #939393;
+  --input-color: #d8d8d8;
+  --muted-color: #9ba5b1;
+  --input-bg: #999999;
+  --switch-color: #6a6b7b;
+}
+[data-theme='dark'] .app {
+  background-image: url('../assets/images/bg-dark.png');
+}
 html, body {
-  margin: 0; 
-  padding: 0; 
-  font-family: 'Inter';
-  }
-  h1, h2 {
-    font-size: unset; 
-    margin: 0;   
-    padding: 0;   
-    font-weight: normal; 
-  }
-.app{
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2 {
+  font-size: unset;
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+.app {
   background-image: url('../assets/images/bg.png');
   background-position: top 3.5em center;
   background-size: cover;
   background-repeat: no-repeat;
 }
-.app-container{
+
+.app-container {
   margin: 0 auto;
   width: 85%;
 }
+
 .menu-container {
   padding: 10em 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.menu{
-  color: #35B8BE;
+
+.menu {
+  color: var(--accent-color);
   font-size: 3.4em;
   letter-spacing: 0.01em;
 }
-.menu-text{
+
+.menu-text {
   line-height: 1.8em;
   width: 39%;
   text-align: center;
-  color: #546285;
+  color: var(--muted-color);
   padding: 1em 0;
   letter-spacing: 0.03em;
 }
-.menu-buttons{
+
+.menu-buttons {
   display: flex;
   flex-direction: row;
   gap: 1.9em;
 }
-.login-form-container{
-  background-color: white;
+
+.login-form-container {
+  background-color: var(--surface-color);
   padding: 2em 3em;
-  border: 0.1em solid rgba(53, 184, 190, 0.15);
+  border: 0.1em solid var(--border-color);
   border-radius: 0.4em;
 }
+
 .login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 5em 0 10em 0;
   row-gap: 1em;
-  h1{
+
+  h1 {
     font-size: 2.5em;
-    color:#35B8BE;
+    color: var(--accent-color);
     letter-spacing: 0.1em;
     line-height: 3em;
   }
-  form{ 
+
+  form {
     display: flex;
     flex-direction: column;
-    input{
-    background-color: #FAFAFA;
-    border: 0.1em solid #DDDDDD; 
-    border-radius: 0.5em;
-    padding: 0.7em 1.7em 0.7em 1em;
-    font-size: 1em;
+
+    input {
+      background-color: var(--input-bg);
+      border: 0.1em solid var(--border-color);
+      border-radius: 0.5em;
+      padding: 0.7em 1.7em 0.7em 1em;
+      font-size: 1em;
+      color: var(--input-color);
     }
-    input::placeholder{
-    color: #08090A;
+
+    input::placeholder {
+      color: var(--input-color);
     }
   }
-  span{
+
+  span {
     padding-right: 1em;
     letter-spacing: 0.1em;
-    color: #08090A;
+    color: var(--input-color);
     align-self: center;
   }
 }
-.login-form p{
+
+.login-form p {
   margin: 0 0 1em 0;
   display: grid;
   grid-template-columns: 1fr 3fr;
 }
-.button-container{
+
+.button-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 1em;
   padding: 0 6.5em;
 }
+
 .order-container {
   padding: 10em 5em;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.order-title{
-  color: #35B8BE;
+
+.order-title {
+  color: var(--accent-color);
   font-size: 3.4em;
   letter-spacing: 0.01em;
   padding-bottom: 1em;
 }
+
 .order-items {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1.2em;
 }
-.order-form{
-    display: flex;
-    flex-direction: column;
-    input{
-    background-color: #FAFAFA;
-    border: 0.1em solid #DDDDDD; 
+
+.order-form {
+  display: flex;
+  flex-direction: column;
+
+  input {
+    background-color: var(--surface-color);
+    border: 0.1em solid var(--border-color);
     border-radius: 0.5em;
     padding: 0.7em 9em 0.7em 1em;
     font-size: 1em;
-    }
-    input::placeholder{
-    color: #08090A;
-    }
-    span{
-      padding-right: 1em;
-      letter-spacing: 0.1em;
-      color: #08090A;
-      align-self: center;
-    }
+    color: var(--input-color);
   }
-  .order-form-container{
-    padding: 2em 3em;
+
+  input::placeholder {
+    color: var(--input-color);
+  }
+
+  span {
+    padding-right: 1em;
+    letter-spacing: 0.1em;
+    color: var(--input-color);
+    align-self: center;
+  }
 }
-.order-button-container{
+
+.order-form-container {
+  padding: 2em 3em;
+}
+
+.order-button-container {
   display: grid;
   padding: 0 8em;
-
 }

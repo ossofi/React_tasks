@@ -2,24 +2,11 @@ import React, { useState, useRef } from 'react';
 import './Card.scss';
 import Button from '../Button/Button';
 import { useDispatch } from 'react-redux';
-import {
-  addToCart,
-  removeFromCart,
-  updateQuantity,
-  CartItem,
-  Product
-} from '../../store/cartSlice';
+import { addToCart, removeFromCart, updateQuantity } from '../../store/cartSlice';
+import type { CartItem, Product, CardProps } from '../../types/types';
 import { AppDispatch } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
-import { CustomUser } from '../../pages/Home';
 
-type CardMode = 'menu' | 'order';
-
-interface CardProps {
-  product: Product | CartItem;
-  mode: CardMode;
-  user?: CustomUser | null;
-}
 
 const Card: React.FC<CardProps> = ({ product, mode, user }) => {
   const navigate = useNavigate();

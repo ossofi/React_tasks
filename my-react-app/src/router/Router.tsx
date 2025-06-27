@@ -5,7 +5,7 @@ import MenuPage from '../pages/Menu';
 import LoginPage from '../pages/Login';
 import OrderPage from '../pages/Order';
 import PrivateRoute from './PrivateRouter';
-import { CustomUser } from '../pages/Home';
+import { CustomUser } from '../types/types';
 
 interface AppRouterProps {
   user: CustomUser | null;

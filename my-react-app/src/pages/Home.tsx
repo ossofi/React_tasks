@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import homeimg from '../assets/images/homeimg.svg';
 import trustpilot from '../assets/images/trustpilot-logo.svg';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   padding: 10em 0;
@@ -99,34 +100,29 @@ export interface CustomUser {
   name: string;
   email: string;
 }
+
 interface HomeProps {
   user: CustomUser | null;
-  onNavigate: (page: 'home' | 'menu' | 'login') => void;
 }
 
-const Home: React.FC<HomeProps> = ({ user, onNavigate }) => {
+const Home: React.FC<HomeProps> = ({ user }) => {
+  const navigate = useNavigate();
+
   const handleOrderClick = () => {
-    if (user) {
-      onNavigate('menu');
-    } else {
-      onNavigate('login');
-    }
+    navigate(user ? '/menu' : '/login');
   };
 
   return (
     <Wrapper>
-    <Grid>
-      <Left>
-        <Heading>
-          Beautiful food & takeaway, <Highlight>delivered</Highlight> to your door.
-        </Heading>
-        <Description>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-        </Description>
-        <StyledButton onClick={handleOrderClick}>
-          Place an Order
-        </StyledButton>
+      <Grid>
+        <Left>
+          <Heading>
+            Beautiful food & takeaway, <Highlight>delivered</Highlight> to your door.
+          </Heading>
+          <Description>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+          </Description>
+          <StyledButton onClick={handleOrderClick}>Place an Order</StyledButton>
           <ReviewScore>
             <TrustLogo>
               <img src={trustpilot} alt="Trustpilot Logo" className="tplogo" />

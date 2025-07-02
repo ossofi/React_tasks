@@ -15,10 +15,9 @@ interface Product {
 
 interface MenuPageProps {
   user: { name: string; email: string } | null;
-  onNavigate: (page: 'home' | 'menu' | 'login') => void;
 }
 
-const MenuPage: React.FC<MenuPageProps> = ({ user, onNavigate }) => {
+const MenuPage: React.FC<MenuPageProps> = ({ user }) => {
   const ITEMS_PER_PAGE = 6;
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -29,27 +28,27 @@ const MenuPage: React.FC<MenuPageProps> = ({ user, onNavigate }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
     fetch('https://65de35f3dccfcd562f5691bb.mockapi.io/api/v1/meals')
       .then(res => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
       })
       .then((data: Product[]) => {
-        setProducts(data);
-        const uniqueCategories = Array.from(new Set(data.map(item => item.category)));
-        setCategories(uniqueCategories);
-        setLoading(false);
+        setTimeout(() => {
+          setProducts(data);
+          const uniqueCategories = Array.from(new Set(data.map(item => item.category)));
+          setCategories(uniqueCategories);
+          setLoading(false);
+        }, 500);
       })
       .catch(err => {
         setError('Failed to load meals');
         setLoading(false);
         console.error('Error fetching meals:', err);
       });
-  }, []);  
+  }, []);
 
-  const filteredProducts = selectedCategory 
+  const filteredProducts = selectedCategory
     ? products.filter(product => product.category === selectedCategory)
     : products;
 
@@ -75,33 +74,40 @@ const MenuPage: React.FC<MenuPageProps> = ({ user, onNavigate }) => {
         our store to place a pickup order. Fast and fresh food.
       </p>
 
-      <div className="menu-buttons">
-        {categories.map(category => (
-          <Button
-            key={category}
-            className={`button--menu ${selectedCategory === category ? 'active' : ''}`}
-            onClick={() => handleCategoryClick(category)}
-          >
-            {category}
-          </Button>
-        ))}
-      </div>
+      {loading && <p>Loading menu...</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      <div className="item-cards">
-        {visibleItems.map(product => (
-          <MenuCard
-            key={product.id}
-            product={product}
-            user={user}
-            onNavigate={onNavigate}
-          />
-        ))}
-      </div>
+      {!loading && !error && (
+        <>
+          <div className="menu-buttons">
+            {categories.map(category => (
+              <Button
+                key={category}
+                className={`button--menu ${selectedCategory === category ? 'active' : ''}`}
+                onClick={() => handleCategoryClick(category)}
+              >
+                {category}
+              </Button>
+            ))}
+          </div>
 
-      {visibleCount < filteredProducts.length && (
-        <Button className="button--more" onClick={handleSeeMore}>
-          See More
-        </Button>
+          <div className="item-cards">
+            {visibleItems.map(product => (
+              <MenuCard
+                key={product.id}
+                product={product}
+                user={user}
+                mode="menu"
+              />
+            ))}
+          </div>
+
+          {visibleCount < filteredProducts.length && (
+            <Button className="button--more" onClick={handleSeeMore}>
+              See More
+            </Button>
+          )}
+        </>
       )}
     </div>
   );

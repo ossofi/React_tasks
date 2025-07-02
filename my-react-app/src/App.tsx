@@ -1,25 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import MenuPage from './pages/Menu';
-import Home from './pages/Home';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import LoginPage from './pages/Login';
 import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
-import { auth } from './firebase.js';
+import { auth } from './firebase';
 import { CustomUser } from './pages/Home';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { resetCart } from './store/cartSlice';
-import { useSelector } from 'react-redux';
 import { RootState } from './store/store';
+import AppRouter from './router/Router';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<CustomUser | null>(null);
-  const [page, setPage] = useState<'home' | 'menu' | 'login'>('home');
+  const dispatch = useDispatch();
 
   const cartCount = useSelector((state: RootState) =>
     state.cart.items.reduce((total, item) => total + item.quantity, 0)
   );
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (currentUser: FirebaseUser | null) => {
@@ -34,27 +31,18 @@ const App: React.FC = () => {
       }
     });
     return () => unsub();
-  }, []);
-  
+  }, [dispatch]);
+
   return (
-    <div className="app">
-      <div className="app-container">
-        <Header
-          cartCount={user ? cartCount : 0}
-          user={user}
-          onNavigate={setPage}/>
-
-        {page === 'login' && (
-          <LoginPage onBackHome={() => setPage('home')} />
-        )}
-
-        {page === 'home' && <Home user={user} onNavigate={setPage} />}
-
-        {page === 'menu' && <MenuPage user={user} onNavigate={setPage} />}
-
-        <Footer />
+    <Router>
+      <div className="app">
+        <div className="app-container">
+          <Header cartCount={user ? cartCount : 0} user={user} />
+          <AppRouter user={user} />
+          <Footer />
+        </div>
       </div>
-    </div>
+    </Router>
   );
 };
 

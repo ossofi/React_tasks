@@ -84,9 +84,67 @@
     appearance: textfield;
   }
   
-  .item-amount input::-webkit-outer-spin-button,
-  .item-amount input::-webkit-inner-spin-button {
+  .item-card.order-mode {
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+  
+    .order-card-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 2em;
+    }
+
+    .order-left {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+  
+      .item-img {
+        height: 6em;
+        border-radius: 0.5em;
+      }
+  
+      .product-title {
+        font-size: 1em;
+        margin: 0;
+      }
+    }
+  
+    .order-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25em;
+  
+      .card-price {
+        font-size: 1em;
+      }
+  
+      input {
+        width: 60px;
+        height: 36px;
+        font-size: 1em;
+        text-align: center;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
+  
+      button {
+        padding: 0.5em 1.4em;
+      }
+    }
+  }
+  
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+  
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
   }
   

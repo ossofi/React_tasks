@@ -1,9 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CustomUser } from '../pages/Home';
-
-interface UserState {
-  user: CustomUser | null;
-}
+import type { CustomUser, UserState } from '../types/types';
 
 const initialState: UserState = {
   user: null,

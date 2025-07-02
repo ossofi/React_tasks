@@ -1,11 +1,6 @@
 import React, { ReactNode, Component, ElementType } from 'react';
 import "../Tooltip/Tooltip.scss";
-
-interface TooltipProps {
-  text: string;
-  children: ReactNode;
-  component?: ElementType;
-}
+import type { TooltipProps } from '../../types/types';
 
 class Tooltip extends Component<TooltipProps> {
   static defaultProps = {

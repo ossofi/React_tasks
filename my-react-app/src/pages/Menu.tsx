@@ -3,19 +3,7 @@ import Tooltip from '../components/Tooltip/Tooltip';
 import MenuCard from '../components/Card/Card';
 import Button from '../components/Button/Button';
 import '../styles/main.scss';
-
-interface Product {
-  id: string;
-  meal: string;
-  price: number;
-  img: string;
-  category: string;
-  instructions?: string;
-}
-
-interface MenuPageProps {
-  user: { name: string; email: string } | null;
-}
+import type { Product, MenuPageProps } from '../types/types';
 
 const MenuPage: React.FC<MenuPageProps> = ({ user }) => {
   const ITEMS_PER_PAGE = 6;
@@ -24,7 +12,7 @@ const MenuPage: React.FC<MenuPageProps> = ({ user }) => {
   const [visibleCount, setVisibleCount] = useState<number>(ITEMS_PER_PAGE);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [categories, setCategories] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -36,8 +24,14 @@ const MenuPage: React.FC<MenuPageProps> = ({ user }) => {
       .then((data: Product[]) => {
         setTimeout(() => {
           setProducts(data);
-          const uniqueCategories = Array.from(new Set(data.map(item => item.category)));
+
+          const categoryList = data
+            .map(item => item.category)
+            .filter((cat): cat is string => !!cat);
+
+          const uniqueCategories = Array.from(new Set(categoryList));
           setCategories(uniqueCategories);
+
           setLoading(false);
         }, 500);
       })

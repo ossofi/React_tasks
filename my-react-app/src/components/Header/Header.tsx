@@ -3,16 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/Logo.png';
 import Cart from '../Cart/Cart';
 import './Header.scss';
-
-interface HeaderProps {
-  cartCount: number;
-  user: {
-    name: string;
-    email: string;
-  } | null;
-}
+import { useContext } from 'react';
+import { ThemeContext } from '../../context/Theme'
+import type { HeaderProps } from '../../types/types';
 
 const Header: React.FC<HeaderProps> = ({ user, cartCount }) => {
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
 
   const handleNav = (path: string) => {
@@ -34,6 +30,11 @@ const Header: React.FC<HeaderProps> = ({ user, cartCount }) => {
           </li>
           <li>
             <Cart user={user} />
+          </li>
+          <li>
+            <button onClick={toggleTheme} className='theme-button'>
+              {theme === 'light' ? 'Dark' : 'Light'}
+            </button>
           </li>
         </ul>
       </nav>

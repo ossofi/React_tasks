@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../store/store';
-import { resetCart } from '../store/cartSlice';
+import { resetCart } from '../store/cartSlice'; // import from slice file
 import Card from '../components/Card/Card';
 import Button from '../components/Button/Button';
-import type { CartItem } from '../types/types'
+import type { CartItem } from '../types/types';
 
 const OrderPage: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);

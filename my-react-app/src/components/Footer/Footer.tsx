@@ -10,7 +10,7 @@ import ytbDark from '../../assets/images/Youtube-dark.png';
 import { ThemeContext } from '../../context/Theme';
 
 const Footer: React.FC = () => {
-  const { theme } = React.useContext(ThemeContext); // ✅ inside component
+  const { theme } = React.useContext(ThemeContext);
 
   const isDark = theme === 'dark';
 
